@@ -1,1 +1,1 @@
-# Analise-Explorat-ria-dos-dados-do-SISU-da-UFS
+# Analise-ExploratOria-dos-dados-do-SISU-da-UFS
