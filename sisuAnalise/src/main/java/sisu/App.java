@@ -20,6 +20,10 @@ public class App extends Application {
         scene = new Scene(loadFXML("janelainicial"), 640, 480);
         stage.setScene(scene);
         
+        stage.setTitle ("Menu - Análise do Sisu");
+        stage.setMinHeight(350);
+        stage.setMinWidth(450);
+        
         stage.show();
     }
 
