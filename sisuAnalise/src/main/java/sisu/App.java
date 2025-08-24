@@ -5,8 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * JavaFX App
@@ -17,6 +17,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        Dados.getInstancia();   
+        
         scene = new Scene(loadFXML("janelainicial"), 640, 480);
         stage.setScene(scene);
         
