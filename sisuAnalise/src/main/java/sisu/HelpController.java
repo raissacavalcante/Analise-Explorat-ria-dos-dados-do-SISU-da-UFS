@@ -38,10 +38,6 @@ public class HelpController implements Initializable {
     private void fecharAba(ActionEvent event) {
     minhaAba.getTabPane().getTabs().remove(minhaAba);
     }
-    
-    @FXML
-    void switchInicial(ActionEvent event) {
-        // Lógica para fechar a tela de ajuda
-    }
+
 
 }

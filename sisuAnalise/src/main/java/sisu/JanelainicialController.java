@@ -89,21 +89,6 @@ public class JanelainicialController implements Initializable {
         
     }
     
-    private void desabilitarTodosBotoes(){
-        botao1.setDisable(true);        
-        botao2.setDisable(true);
-        botao3.setDisable(true);
-        botao4.setDisable(true);
-        botao5.setDisable(true);
-        botao6.setDisable(true);
-        botao7.setDisable(true);
-        botao8.setDisable(true);
-        botao9.setDisable(true);
-        botao10.setDisable(true);
-        botao11.setDisable(true);
-        botao12.setDisable(true);
-    }
-    
     private void adicionarListenersFiltros() {
         filtroAno.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
         filtroCampus.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
@@ -116,7 +101,7 @@ public class JanelainicialController implements Initializable {
         String cursoSelecionado = filtroCurso.getSelectionModel().getSelectedItem();
         
         boolean validaAno = (filtroAno.getSelectionModel().getSelectedItem() != null);
-        boolean validaCampus = ( filtroAno.getSelectionModel().getSelectedItem() != null);
+        boolean validaCampus = ( filtroCampus.getSelectionModel().getSelectedItem() != null);
         boolean validaDemanda = (filtroDemanda.getSelectionModel().getSelectedItem() != null);
         boolean validaCurso = (cursoSelecionado != "" && cursoSelecionado != null);
 
@@ -131,7 +116,6 @@ public class JanelainicialController implements Initializable {
     public void initialize(URL url, ResourceBundle rb){
         this.dadosSisu = Dados.getInstancia().getListaCandidatos();
         preencherFiltros();
-        desabilitarTodosBotoes();
         adicionarListenersFiltros();
         
     }    

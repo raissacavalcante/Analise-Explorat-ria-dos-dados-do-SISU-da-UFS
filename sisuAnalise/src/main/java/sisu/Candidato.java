@@ -8,8 +8,11 @@ public class Candidato{
     public Candidato(String [] c){        
         numero_enem = c[0];
         nome = c[1];
-        curso = c[2];
-        // Lógica para corrigir o nome do campus
+
+        if(c[2].startsWith("C.")){
+            curso = "CIENCIAS" + c[2].substring(2);
+        }else curso = c[2];
+        
         if (c[3].equals("CAMPUS DO SER")) {
             campus = "CAMPUS DO SERTAO";
         } else {
