@@ -23,7 +23,7 @@ public class App extends Application {
         stage.setScene(scene);
         
         stage.setTitle ("Menu - Análise do Sisu");
-        stage.setMinHeight(550);
+        stage.setMinHeight(600);
         stage.setMinWidth(600);
         
         stage.show();

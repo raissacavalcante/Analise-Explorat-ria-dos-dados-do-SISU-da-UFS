@@ -6,7 +6,11 @@ package sisu;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,13 +28,13 @@ import javafx.fxml.FXMLLoader;
 public class JanelainicialController implements Initializable {
 
     @FXML
-    private ComboBox<?> filtroAno;
+    private ComboBox<String> filtroAno;
     @FXML
-    private ComboBox<?> filtroCurso;
+    private ComboBox<String> filtroCurso;
     @FXML
-    private ComboBox<?> filtroCampus;
+    private ComboBox<String> filtroCampus;
     @FXML
-    private ComboBox<?> filtroDemanda;
+    private ComboBox<String> filtroDemanda;
     @FXML
     private Button botao1;
     @FXML
@@ -59,18 +63,83 @@ public class JanelainicialController implements Initializable {
     private TextArea txtInfo;
     @FXML
     private Button botaoAjuda;
-    /**
-     * Initializes the controller class.
-     */
+ 
+    private ArrayList<Candidato> dadosSisu;
+    private Set<String> campus, demandas, cursos;
+
+    private void preencherFiltros(){
+        List<String> anos = Arrays.asList("2019", "2020", "2021", "2022", "2023", "2024", "2025");
+        filtroAno.getItems().addAll(anos);
+        
+        campus = new TreeSet<>();
+        demandas = new TreeSet<>();
+        cursos = new TreeSet<>();
+        
+        if (dadosSisu != null && !dadosSisu.isEmpty()) {
+            for (Candidato candidato : dadosSisu) {
+                campus.add(candidato.campus);
+                demandas.add(candidato.demanda);
+                cursos.add(candidato.curso);
+            }
+            
+            filtroDemanda.getItems().addAll(demandas);
+            filtroCurso.getItems().addAll(cursos);
+            filtroCampus.getItems().addAll(campus);
+        }
+        
+    }
+    
+    private void desabilitarTodosBotoes(){
+        botao1.setDisable(true);        
+        botao2.setDisable(true);
+        botao3.setDisable(true);
+        botao4.setDisable(true);
+        botao5.setDisable(true);
+        botao6.setDisable(true);
+        botao7.setDisable(true);
+        botao8.setDisable(true);
+        botao9.setDisable(true);
+        botao10.setDisable(true);
+        botao11.setDisable(true);
+        botao12.setDisable(true);
+    }
+    
+    private void adicionarListenersFiltros() {
+        filtroAno.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
+        filtroCampus.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
+        filtroDemanda.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
+        filtroCurso.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
+    }
+
+    private void atualizar(){ 
+        
+        String cursoSelecionado = filtroCurso.getSelectionModel().getSelectedItem();
+        
+        boolean validaAno = (filtroAno.getSelectionModel().getSelectedItem() != null);
+        boolean validaCampus = ( filtroAno.getSelectionModel().getSelectedItem() != null);
+        boolean validaDemanda = (filtroDemanda.getSelectionModel().getSelectedItem() != null);
+        boolean validaCurso = (cursoSelecionado != "" && cursoSelecionado != null);
+
+        botao1.setDisable(!validaAno);
+        botao2.setDisable(!validaCampus);
+        botao3.setDisable(!validaDemanda);
+        botao4.setDisable(!validaCurso);
+    }
+  
+    
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    public void initialize(URL url, ResourceBundle rb){
+        this.dadosSisu = Dados.getInstancia().getListaCandidatos();
+        preencherFiltros();
+        desabilitarTodosBotoes();
+        adicionarListenersFiltros();
+        
     }    
     
     @FXML
     private TabPane tabPane;
     @FXML
-    private void abrirF1(ActionEvent event) {
+    private void abrirAjuda(ActionEvent event){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("help.fxml")); // seu FXML de help
             AnchorPane abaContent = loader.load();
@@ -88,6 +157,10 @@ public class JanelainicialController implements Initializable {
         }
     }
 
+    @FXML
+    private void abrirF1(ActionEvent event) {
+    }    
+    
     @FXML
     private void abrirF2(ActionEvent event) {
     }
@@ -132,9 +205,6 @@ public class JanelainicialController implements Initializable {
     private void abrirF12(ActionEvent event) {
     }
     
-    @FXML
-    void switchAjuda(ActionEvent event) throws IOException {
-        App.setRoot("help");
-    }
+
 
 }
