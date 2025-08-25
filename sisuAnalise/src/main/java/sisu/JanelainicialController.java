@@ -11,6 +11,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.fxml.FXMLLoader;
 
 /**
  * FXML Controller class
@@ -64,7 +68,24 @@ public class JanelainicialController implements Initializable {
     }    
     
     @FXML
+    private TabPane tabPane;
+    @FXML
     private void abrirF1(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("help.fxml")); // seu FXML de help
+            AnchorPane abaContent = loader.load();
+
+            Tab novaAba = new Tab("Ajuda");
+            novaAba.setContent(abaContent);
+            tabPane.getTabs().add(novaAba);
+            tabPane.getSelectionModel().select(novaAba);
+
+            // Pega o controller se precisar passar dados
+            HelpController controller = loader.getController();
+            // controller.setAlgumaCoisa("texto"); // se precisar
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

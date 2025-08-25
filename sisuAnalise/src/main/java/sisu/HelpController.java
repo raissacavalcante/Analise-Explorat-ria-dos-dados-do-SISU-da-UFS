@@ -11,13 +11,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
 /**
  * FXML Controller class
  *
  * @author sophi
  */
 public class HelpController implements Initializable {
+    private Tab minhaAba;
 
+    public void setTab(Tab aba){
+        this.minhaAba = aba;
+    }
 
     @FXML
     private Button voltar;
@@ -30,8 +35,8 @@ public class HelpController implements Initializable {
     }    
     
     @FXML
-    private void switchInicial(ActionEvent event)  throws IOException {
-        App.setRoot("janelainicial");
+    private void fecharAba(ActionEvent event) {
+    minhaAba.getTabPane().getTabs().remove(minhaAba);
     }
 
 }
