@@ -86,6 +86,7 @@ public class JanelainicialController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("abrirF1 foi chamado!");
     }
 
     @FXML
