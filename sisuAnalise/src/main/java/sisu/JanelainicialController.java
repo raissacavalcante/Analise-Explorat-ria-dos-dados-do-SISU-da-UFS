@@ -63,6 +63,12 @@ public class JanelainicialController implements Initializable {
     private TextArea txtInfo;
     @FXML
     private Button botaoAjuda;
+    
+    @FXML
+    private TabPane tabPane;
+
+    @FXML
+    private Tab tabPrincipal;
  
     private ArrayList<Candidato> dadosSisu;
     private Set<String> campus, demandas, cursos;
@@ -89,20 +95,37 @@ public class JanelainicialController implements Initializable {
         
     }
     
-    private void adicionarListenersFiltros() {
-        filtroAno.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
-        filtroCampus.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
-        filtroDemanda.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
-        filtroCurso.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
+    private ArrayList<Candidato> filtrarDados() {
+        String cursoSelecionado = filtroCurso.getSelectionModel().getSelectedItem();
+        String anoSelecionado = filtroAno.getSelectionModel().getSelectedItem();
+        String demandaSelecionada = filtroDemanda.getSelectionModel().getSelectedItem();
+        String campusSelecionado = filtroCampus.getSelectionModel().getSelectedItem();
+
+        ArrayList<Candidato> dadosFiltrados = new ArrayList<>();
+
+        for (Candidato candidato : dadosSisu) {
+            boolean validaAno = (anoSelecionado == null || String.valueOf(candidato.ano).equals(anoSelecionado) || anoSelecionado == "");
+            boolean validaCurso = (cursoSelecionado == null || candidato.curso.equals(cursoSelecionado));
+            boolean validaCampus = (campusSelecionado == null || candidato.campus.equals(campusSelecionado));
+            boolean validaDemanda = (demandaSelecionada == null || candidato.demanda.equals(demandaSelecionada));
+
+            if (validaAno && validaCurso && validaCampus && validaDemanda) {
+                dadosFiltrados.add(candidato);
+            }
+        }
+        return dadosFiltrados;
     }
 
     private void atualizar(){ 
         
         String cursoSelecionado = filtroCurso.getSelectionModel().getSelectedItem();
+        String anoSelecionado = filtroAno.getSelectionModel().getSelectedItem();
+        String demandaSelecionada = filtroDemanda.getSelectionModel().getSelectedItem();
+        String campusSelecionado = filtroCampus.getSelectionModel().getSelectedItem();
         
-        boolean validaAno = (filtroAno.getSelectionModel().getSelectedItem() != null);
-        boolean validaCampus = ( filtroCampus.getSelectionModel().getSelectedItem() != null);
-        boolean validaDemanda = (filtroDemanda.getSelectionModel().getSelectedItem() != null);
+        boolean validaAno = (anoSelecionado != null);
+        boolean validaCampus = ( campusSelecionado != null);
+        boolean validaDemanda = (demandaSelecionada != null);
         boolean validaCurso = (cursoSelecionado != "" && cursoSelecionado != null);
 
         botao1.setDisable(!validaAno);
@@ -115,13 +138,16 @@ public class JanelainicialController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb){
         this.dadosSisu = Dados.getInstancia().getListaCandidatos();
+        botao12.setDisable(false);
         preencherFiltros();
-        adicionarListenersFiltros();
+        
+        filtroAno.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
+        filtroCampus.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
+        filtroDemanda.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
+        filtroCurso.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
         
     }    
-    
-    @FXML
-    private TabPane tabPane;
+
     @FXML
     private void abrirAjuda(ActionEvent event){
         try {
@@ -143,6 +169,7 @@ public class JanelainicialController implements Initializable {
 
     @FXML
     private void abrirF1(ActionEvent event) {
+        
     }    
     
     @FXML
@@ -187,6 +214,21 @@ public class JanelainicialController implements Initializable {
 
     @FXML
     private void abrirF12(ActionEvent event) {
+        try {
+            ArrayList<Candidato> dadosParaF12 = filtrarDados();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("consultanome.fxml")); 
+            AnchorPane abaContent = loader.load();
+
+            Tab novaAba = new Tab("Consultar Nome");
+            novaAba.setContent(abaContent);
+            tabPane.getTabs().add(novaAba);
+            tabPane.getSelectionModel().select(novaAba);
+
+            ConsultanomeController controllerF12 = loader.getController();
+            controllerF12.setDados(dadosParaF12);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 

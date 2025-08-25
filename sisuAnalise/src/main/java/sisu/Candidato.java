@@ -27,7 +27,14 @@ public class Candidato{
     }    
 
     public String toString() {
-        return nome + " - " + curso + " (" + media + ") - Colocação: " + colocacao;
+        return "Numero Enem: "+ this.numero_enem + "\n"+
+               "Nome: " + this.nome + "\n" +
+               "Curso: " + this.curso + "\n" +
+               "Campus: " + this.campus + "\n" +
+               "Colocação: " + this.colocacao + "\n" +
+               "Média: " + this.media + "\n"+
+               "Estado: " + this.estado + "\n" +
+               "Demanda: " + this.demanda + "\n";
     }
     
     public String tratamentoDemanda(String s) {
