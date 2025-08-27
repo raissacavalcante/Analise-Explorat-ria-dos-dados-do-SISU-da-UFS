@@ -36,8 +36,10 @@ public class Utilidade1Controller implements Initializable {
         eixoX.setLabel("Ano");
         eixoY.setLabel("Nota de Corte");
         
-        /*
-        Map<String, Map<Integer, Double>> notasPorCampus = calcularNotacorte(dados, "");
+//        oiiiiie
+        
+        
+        /*Map<String, Map<Integer, Double>> notasPorCampus = calcularNotacorte(dados, "");
         
         for(Map.Entry<String, Map<Integer, Double>> campus : notasPorCampus.entrySet()){
             XYChart.Series<String, Number> serie = new XYChart.Series<>();
