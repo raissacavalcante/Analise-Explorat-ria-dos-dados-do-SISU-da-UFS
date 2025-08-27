@@ -12,6 +12,11 @@ import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
+import java.util.*;
 
 /**
  * FXML Controller class
@@ -22,35 +27,64 @@ import javafx.scene.chart.*;
 public class Utilidade1Controller implements Initializable {
 
     @FXML
-    private LineChart<String, Number> lineChart;
+    private LineChart<Number, Number> lineChart;
     
     @FXML
-    private CategoryAxis eixoX;
+    private NumberAxis eixoX;
     
     @FXML
     private NumberAxis eixoY;
     
     private List<Candidato> dados;
     
-    public void initialize(){
-        eixoX.setLabel("Ano");
-        eixoY.setLabel("Nota de Corte");
+    private String cursosel;
+    
+    public void setCurso(String curso){
+        this.cursosel = curso;
+        grafico();
+    }
+    
+    public void grafico(){
+        Map<String, Map<Integer, Double>> dadosAgrupados = new HashMap<>();
         
-//        oiiiiie
-        
-        
-        /*Map<String, Map<Integer, Double>> notasPorCampus = calcularNotacorte(dados, "");
-        
-        for(Map.Entry<String, Map<Integer, Double>> campus : notasPorCampus.entrySet()){
-            XYChart.Series<String, Number> serie = new XYChart.Series<>();
-            serie.setName(campus.getKey());
+        for(Candidato c : dados) {
+            if(!c.getCurso().equalsIgnoreCase(cursosel)){
+                continue;
+            }
             
-            for(Map.Entry<Integer, Double> ano : campus.getValue().entrySet()) {
-                serie.getData().add(new XYChart.Data<>(ano.getKey().toString(), ano.getValue()));
+            if(!dadosAgrupados.containsKey(c.getCampus())) {
+                dadosAgrupados.put(c.getCampus(), new HashMap<>());
+            }
+            
+            Map<Integer, Double> notaDeCorte = dadosAgrupados.get(c.getCampus());
+            
+            if(!notaDeCorte.containsKey(c.getAno())){
+                notaDeCorte.put(c.getAno(), c.getMedia());
+            }else{
+                double notaAtual = notaDeCorte.get(c.getAno());
+                if(c.getMedia() < notaAtual){
+                    notaDeCorte.put(c.getAno(), c.getMedia());
+                }
+            }
+        }
+        
+        for(String campus : dadosAgrupados.keySet()){
+            XYChart.Series<Number, Number> serie = new XYChart.Series<>();
+            serie.setName(campus);
+            
+            Map<Integer, Double> notaDeCorte = dadosAgrupados.get(campus);
+            
+            List<Integer> anos = new ArrayList<>(notaDeCorte.keySet());
+            Collections.sort(anos);
+            
+            for(Integer ano : anos){
+                Double nota = notaDeCorte.get(ano);
+                serie.getData().add(new XYChart.Data<>(ano, nota));
             }
             
             lineChart.getData().add(serie);
-        }*/
+        }
+       
     }
     
     public void setDados(ArrayList<Candidato> dados) {
