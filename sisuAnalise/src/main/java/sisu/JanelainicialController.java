@@ -7,10 +7,6 @@ package sisu;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -63,16 +59,17 @@ public class JanelainicialController implements Initializable {
     private TextArea txtInfo;
     @FXML
     private Button botaoAjuda;
+ 
+    @FXML private Button Lano;
+    @FXML private Button Lcampus;
+    @FXML private Button Ldemanda;
     
-    @FXML
-    private TabPane tabPane;
-
-    @FXML
-    private Tab tabPrincipal;
+    @FXML private TabPane tabPane;
+    @FXML private Tab tabPrincipal;
  
     private ArrayList<Candidato> dadosSisu;
     private Set<String> campus, demandas, cursos;
-
+   
     private void preencherFiltros(){
         List<String> anos = Arrays.asList("2019", "2020", "2021", "2022", "2023", "2024", "2025");
         filtroAno.getItems().addAll(anos);
@@ -89,8 +86,9 @@ public class JanelainicialController implements Initializable {
             }
             
             filtroDemanda.getItems().addAll(demandas);
-            filtroCurso.getItems().addAll(cursos);
             filtroCampus.getItems().addAll(campus);
+            filtroCurso.getItems().addAll(cursos);
+
         }
         
     }
@@ -104,7 +102,7 @@ public class JanelainicialController implements Initializable {
         ArrayList<Candidato> dadosFiltrados = new ArrayList<>();
 
         for (Candidato candidato : dadosSisu) {
-            boolean validaAno = (anoSelecionado == null || String.valueOf(candidato.ano).equals(anoSelecionado) || anoSelecionado == "");
+            boolean validaAno = (anoSelecionado == null || String.valueOf(candidato.ano).equals(anoSelecionado));
             boolean validaCurso = (cursoSelecionado == null || candidato.curso.equals(cursoSelecionado));
             boolean validaCampus = (campusSelecionado == null || candidato.campus.equals(campusSelecionado));
             boolean validaDemanda = (demandaSelecionada == null || candidato.demanda.equals(demandaSelecionada));
@@ -115,9 +113,8 @@ public class JanelainicialController implements Initializable {
         }
         return dadosFiltrados;
     }
-
-    private void atualizar(){ 
         
+    private void atualizar(){ 
         String cursoSelecionado = filtroCurso.getSelectionModel().getSelectedItem();
         String anoSelecionado = filtroAno.getSelectionModel().getSelectedItem();
         String demandaSelecionada = filtroDemanda.getSelectionModel().getSelectedItem();
@@ -126,26 +123,62 @@ public class JanelainicialController implements Initializable {
         boolean validaAno = (anoSelecionado != null);
         boolean validaCampus = ( campusSelecionado != null);
         boolean validaDemanda = (demandaSelecionada != null);
-        boolean validaCurso = (cursoSelecionado != "" && cursoSelecionado != null);
+        boolean validaCurso = (cursoSelecionado != null && cursos.contains(cursoSelecionado));
 
         botao1.setDisable(!validaAno);
         botao2.setDisable(!validaCampus);
         botao3.setDisable(!validaDemanda);
         botao4.setDisable(!validaCurso);
     }
-  
+    
+    @FXML
+    void limparAno(ActionEvent event) {
+        filtroAno.getSelectionModel().clearSelection();
+        atualizar();
+    }
+
+    @FXML
+    void limparCampus(ActionEvent event) {
+        filtroCampus.getSelectionModel().clearSelection();
+        atualizar();
+    }
+
+    @FXML
+    void limparDemanda(ActionEvent event) {
+        filtroDemanda.getSelectionModel().clearSelection();
+        atualizar();
+    }
+    
+    private void adiocionarListeners(){
+    
+        filtroAno.valueProperty().addListener((obs, oldVal, newVal) ->  atualizar());
+        filtroCampus.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
+        filtroDemanda.valueProperty().addListener((obs, oldVal, newVal) ->  atualizar());
+        filtroCurso.valueProperty().addListener((obs, oldVal, newVal) ->  atualizar());
+        
+        filtroCurso.getEditor().textProperty().addListener((var obs, var oldV, var newV) -> {
+            String txt = (newV == null ? "" : newV).toLowerCase();
+            
+            System.out.println(txt);
+
+            if (txt.isEmpty()) {
+                filtroCurso.getItems().setAll(cursos);
+            } else{
+                Set<String> filtrado = new TreeSet<>();
+                for(String c : cursos){
+                    if(c.toLowerCase().contains(txt)) filtrado.add(c);
+                }
+                filtroCurso.getItems().setAll(filtrado);
+            }    
+        });
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
         this.dadosSisu = Dados.getInstancia().getListaCandidatos();
         botao12.setDisable(false);
         preencherFiltros();
-        
-        filtroAno.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
-        filtroCampus.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
-        filtroDemanda.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
-        filtroCurso.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
-        
+        adiocionarListeners();
     }    
 
     @FXML
@@ -229,7 +262,4 @@ public class JanelainicialController implements Initializable {
             e.printStackTrace();
         }
     }
-    
-
-
 }

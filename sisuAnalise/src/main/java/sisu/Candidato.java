@@ -8,10 +8,15 @@ public class Candidato{
     public Candidato(String [] c){        
         numero_enem = c[0];
         nome = c[1];
-
-        if(c[2].startsWith("C.")){
+        
+        c[2] = c[2].replace(" - ", " ");
+        
+        if(c[2].startsWith("C. D")){
+            curso = "CIENCIA" + c[2].substring(2);
+        }else if(c[2].startsWith("C.")){
             curso = "CIENCIAS" + c[2].substring(2);
         }else curso = c[2];
+ 
         
         if (c[3].equals("CAMPUS DO SER")) {
             campus = "CAMPUS DO SERTAO";

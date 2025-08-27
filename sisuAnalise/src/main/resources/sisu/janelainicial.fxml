@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <TabPane fx:id="tabPane" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sisu.JanelainicialController">
    <tabs>
@@ -31,22 +32,64 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ComboBox fx:id="filtroAno" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="156.0" promptText="Ano">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </ComboBox>
-                        <ComboBox fx:id="filtroCampus" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="166.0" promptText="Campus" GridPane.columnIndex="1">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </ComboBox>
-                        <ComboBox fx:id="filtroDemanda" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="162.0" promptText="Demanda" GridPane.columnIndex="2">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </ComboBox>
-                        <ComboBox fx:id="filtroCurso" editable="true" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="327.0" promptText="Curso" GridPane.columnSpan="4" GridPane.rowIndex="1">
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <ComboBox fx:id="filtroAno" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="156.0" promptText="Ano" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets right="10.0" />
+                                 </BorderPane.margin>
+                              </ComboBox>
+                           </center>
+                           <left>
+                              <Button fx:id="Lano" mnemonicParsing="false" onAction="#limparAno" prefHeight="25.0" prefWidth="21.0" style="-fx-background-color: #6f6f6f;" text="X" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <BorderPane.margin>
+                                    <Insets bottom="12.0" left="10.0" top="12.0" />
+                                 </BorderPane.margin>
+                              </Button>
+                           </left>
+                        </BorderPane>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <center>
+                              <ComboBox fx:id="filtroCampus" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="166.0" promptText="Campus" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets right="10.0" />
+                                 </BorderPane.margin>
+                              </ComboBox>
+                           </center>
+                           <left>
+                              <Button fx:id="Lcampus" mnemonicParsing="false" onAction="#limparCampus" prefHeight="25.0" prefWidth="21.0" style="-fx-background-color: #6f6f6f;" text="X" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <BorderPane.margin>
+                                    <Insets bottom="12.0" left="10.0" top="12.0" />
+                                 </BorderPane.margin>
+                              </Button>
+                           </left>
+                        </BorderPane>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <left>
+                              <Button fx:id="Ldemanda" mnemonicParsing="false" onAction="#limparDemanda" prefHeight="25.0" prefWidth="21.0" style="-fx-background-color: #6f6f6f;" text="X" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <BorderPane.margin>
+                                    <Insets bottom="12.0" left="10.0" top="12.0" />
+                                 </BorderPane.margin>
+                              </Button>
+                           </left>
+                           <center>
+                              <ComboBox fx:id="filtroDemanda" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="162.0" promptText="Demanda" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets right="10.0" />
+                                 </BorderPane.margin>
+                              </ComboBox>
+                           </center>
+                        </BorderPane>
+                        <ComboBox fx:id="filtroCurso" editable="true" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="255.0" promptText="Curso" GridPane.columnSpan="3" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets left="10.0" right="10.0" />
                            </GridPane.margin>
