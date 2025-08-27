@@ -31,4 +31,18 @@ public class CalculadoraNotaCorte {
         }
         return resultado;
     }
+    
+    public static Map<String, Double> calcularNotaCorte(List<Candidato> candidatos, boolean fcampus){
+        Map<String, Double> resultado = new HashMap<>();
+        
+        for(Candidato c : candidatos){
+            String curr = c.getCurso();
+            if(!fcampus) curr += (" - " + c.getCampus());
+            
+            if(resultado.containsKey(curr)){
+                resultado.put(curr, Math.min(c.getMedia(), resultado.get(curr)));
+            }else resultado.put(curr, c.getMedia());
+        }
+        return resultado;
+    }
 }
