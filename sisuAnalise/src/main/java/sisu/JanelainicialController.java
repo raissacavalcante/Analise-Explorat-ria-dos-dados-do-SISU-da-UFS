@@ -209,12 +209,24 @@ public class JanelainicialController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("abrirF1 foi chamado!");
     }
 
     @FXML
     private void abrirF1(ActionEvent event) {
-        
+        try {
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("pizzademanda.fxml")); 
+            AnchorPane abaContent = loader.load();
+
+            Tab novaAba = new Tab("Gráfico ...");
+            novaAba.setContent(abaContent);
+            tabPane.getTabs().add(novaAba);
+            tabPane.getSelectionModel().select(novaAba);
+
+            PizzademandaController controllerF11 = loader.getController();
+            controllerF11.setDados(filtrarDados(), filtrosSelecionados(), demandas);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }    
     
     @FXML
