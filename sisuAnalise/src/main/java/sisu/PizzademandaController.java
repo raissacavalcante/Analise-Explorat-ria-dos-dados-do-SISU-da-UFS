@@ -9,7 +9,6 @@ import java.util.*;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
@@ -76,7 +75,6 @@ public class PizzademandaController implements Initializable {
 
         graficoPizza.getData().addAll(grafDados);
         listaFiltros.setItems(dadosListaView);
-
     }
     
 }

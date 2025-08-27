@@ -15,6 +15,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * FXML Controller class
@@ -69,6 +71,8 @@ public class JanelainicialController implements Initializable {
  
     private ArrayList<Candidato> dadosSisu;
     private Set<String> campus, demandas, cursos;
+    
+    private boolean mark = false;
    
     private void preencherFiltros(){
         List<String> anos = Arrays.asList("2019", "2020", "2021", "2022", "2023", "2024", "2025");
@@ -154,24 +158,31 @@ public class JanelainicialController implements Initializable {
         filtroAno.valueProperty().addListener((obs, oldVal, newVal) ->  atualizar());
         filtroCampus.valueProperty().addListener((obs, oldVal, newVal) -> atualizar());
         filtroDemanda.valueProperty().addListener((obs, oldVal, newVal) ->  atualizar());
-        filtroCurso.valueProperty().addListener((obs, oldVal, newVal) ->  atualizar());
+        filtroCurso.valueProperty().addListener((obs, oldVal, newVal) -> {
+                        atualizar();
+                        System.out.println(1);
+                        mark = true;
+                        });
         
-        
-        /*
-        
-        filtroCurso.getEditor().textProperty().addListener((var obs, var oldV, var newV) -> {
+        filtroCurso.getEditor().textProperty().addListener((obs, oldV, newV) -> {
+            if(mark == true){
+                System.out.println("Entrou");
+                mark = false;
+                return;
+            }
+            System.out.println(2);
+            filtroCurso.show();
             String txt = (newV == null ? "" : newV).toLowerCase();
-
             if (txt.isEmpty()) {
                 filtroCurso.getItems().setAll(cursos);
-            } else{
+            } else {
                 Set<String> filtrado = new TreeSet<>();
                 for(String c : cursos){
                     if(c.toLowerCase().contains(txt)) filtrado.add(c);
                 }
                 filtroCurso.getItems().setAll(filtrado);
-            }    
-        });*/
+            }
+        });
     }
     
     @Override
@@ -263,7 +274,6 @@ public class JanelainicialController implements Initializable {
      @FXML
     private void abrirF12(ActionEvent event) {
         try {
-            ArrayList<Candidato> dadosParaF12 = filtrarDados();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("consultanome.fxml")); 
             AnchorPane abaContent = loader.load();
 
