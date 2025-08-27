@@ -6,6 +6,7 @@ package sisu;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -17,13 +18,14 @@ import javafx.scene.chart.*;
  *
  * @author pc
  */
+
 public class Utilidade1Controller implements Initializable {
 
     @FXML
     private LineChart<String, Number> lineChart;
     
     @FXML
-    private CategoryAxys eixoX;
+    private CategoryAxis eixoX;
     
     @FXML
     private NumberAxis eixoY;
@@ -34,6 +36,7 @@ public class Utilidade1Controller implements Initializable {
         eixoX.setLabel("Ano");
         eixoY.setLabel("Nota de Corte");
         
+        /*
         Map<String, Map<Integer, Double>> notasPorCampus = calcularNotacorte(dados, "");
         
         for(Map.Entry<String, Map<Integer, Double>> campus : notasPorCampus.entrySet()){
@@ -45,7 +48,7 @@ public class Utilidade1Controller implements Initializable {
             }
             
             lineChart.getData().add(serie);
-        }
+        }*/
     }
     
     public void setDados(ArrayList<Candidato> dados) {

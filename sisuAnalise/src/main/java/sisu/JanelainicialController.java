@@ -113,6 +113,22 @@ public class JanelainicialController implements Initializable {
         }
         return dadosFiltrados;
     }
+    
+    private ArrayList<String> filtrosSelecionados(){
+        String cursoSelecionado = filtroCurso.getSelectionModel().getSelectedItem();
+        String anoSelecionado = filtroAno.getSelectionModel().getSelectedItem();
+        String demandaSelecionada = filtroDemanda.getSelectionModel().getSelectedItem();
+        String campusSelecionado = filtroCampus.getSelectionModel().getSelectedItem();
+
+        ArrayList<String> filtros = new ArrayList<>();
+        
+        if(cursoSelecionado != null && cursos.contains(cursoSelecionado)) filtros.add(cursoSelecionado);
+        if(demandaSelecionada != null) filtros.add(demandaSelecionada);
+        if(anoSelecionado != null) filtros.add(anoSelecionado);
+        if(campusSelecionado != null) filtros.add(campusSelecionado);
+        
+        return filtros;
+    }
         
     private void atualizar(){ 
         String cursoSelecionado = filtroCurso.getSelectionModel().getSelectedItem();
@@ -129,24 +145,8 @@ public class JanelainicialController implements Initializable {
         botao2.setDisable(!validaCampus);
         botao3.setDisable(!validaDemanda);
         botao4.setDisable(!validaCurso);
-    }
-    
-    @FXML
-    void limparAno(ActionEvent event) {
-        filtroAno.getSelectionModel().clearSelection();
-        atualizar();
-    }
-
-    @FXML
-    void limparCampus(ActionEvent event) {
-        filtroCampus.getSelectionModel().clearSelection();
-        atualizar();
-    }
-
-    @FXML
-    void limparDemanda(ActionEvent event) {
-        filtroDemanda.getSelectionModel().clearSelection();
-        atualizar();
+        
+        botao11.setDisable(!validaAno || validaDemanda);
     }
     
     private void adiocionarListeners(){
@@ -156,10 +156,11 @@ public class JanelainicialController implements Initializable {
         filtroDemanda.valueProperty().addListener((obs, oldVal, newVal) ->  atualizar());
         filtroCurso.valueProperty().addListener((obs, oldVal, newVal) ->  atualizar());
         
+        
+        /*
+        
         filtroCurso.getEditor().textProperty().addListener((var obs, var oldV, var newV) -> {
             String txt = (newV == null ? "" : newV).toLowerCase();
-            
-            System.out.println(txt);
 
             if (txt.isEmpty()) {
                 filtroCurso.getItems().setAll(cursos);
@@ -170,7 +171,7 @@ public class JanelainicialController implements Initializable {
                 }
                 filtroCurso.getItems().setAll(filtrado);
             }    
-        });
+        });*/
     }
     
     @Override
@@ -180,6 +181,7 @@ public class JanelainicialController implements Initializable {
         preencherFiltros();
         adiocionarListeners();
     }    
+
 
     @FXML
     private void abrirAjuda(ActionEvent event){
@@ -242,9 +244,23 @@ public class JanelainicialController implements Initializable {
 
     @FXML
     private void abrirF11(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("pizzademanda.fxml")); 
+            AnchorPane abaContent = loader.load();
+
+            Tab novaAba = new Tab("N sei ainda");
+            novaAba.setContent(abaContent);
+            tabPane.getTabs().add(novaAba);
+            tabPane.getSelectionModel().select(novaAba);
+
+            PizzademandaController controllerF11 = loader.getController();
+            controllerF11.setDados(filtrarDados(), filtrosSelecionados(), demandas);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @FXML
+     @FXML
     private void abrirF12(ActionEvent event) {
         try {
             ArrayList<Candidato> dadosParaF12 = filtrarDados();
@@ -257,9 +273,31 @@ public class JanelainicialController implements Initializable {
             tabPane.getSelectionModel().select(novaAba);
 
             ConsultanomeController controllerF12 = loader.getController();
-            controllerF12.setDados(dadosParaF12);
+            controllerF12.setDados(filtrarDados());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+   
+    
+    @FXML
+    void limparAno(ActionEvent event) {
+        filtroAno.getSelectionModel().clearSelection();
+        atualizar();
+    }
+
+    @FXML
+    void limparCampus(ActionEvent event) {
+        filtroCampus.getSelectionModel().clearSelection();
+        atualizar();
+    }
+
+    @FXML
+    void limparDemanda(ActionEvent event) {
+        filtroDemanda.getSelectionModel().clearSelection();
+        atualizar();
+    }
+    
+
+
 }
