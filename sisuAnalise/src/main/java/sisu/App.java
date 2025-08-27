@@ -19,11 +19,11 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         Dados.getInstancia();   
         
-        scene = new Scene(loadFXML("janelainicial"), 640, 480);
+        scene = new Scene(loadFXML("janelainicial"), 600, 600);
         stage.setScene(scene);
         
         stage.setTitle ("Menu - Análise do Sisu");
-        stage.setMinHeight(550);
+        stage.setMinHeight(600);
         stage.setMinWidth(600);
         
         stage.show();

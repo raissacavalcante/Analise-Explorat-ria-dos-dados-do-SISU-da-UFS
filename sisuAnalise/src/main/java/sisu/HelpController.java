@@ -39,4 +39,5 @@ public class HelpController implements Initializable {
     minhaAba.getTabPane().getTabs().remove(minhaAba);
     }
 
+
 }
